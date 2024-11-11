@@ -16,11 +16,9 @@ spec:
       serviceAccountName: fluentd
       containers:
       - name: fluentd
-        image: fluent/fluentd:v1.17.1-1.1 # Consider using a specific version
-        command: ["sh", "-c"]
-        args:
-        - |
-          gem install fluent-plugin-loki && fluentd -c /fluentd/etc/fluent.conf
+        image: grafana/fluent-plugin-loki:latest  # <--- REPLACE THIS with your image
+        command: ["fluentd"]                 # <--- Simplified command
+        args: ["-c", "/fluentd/etc/fluent.conf"] # <--- Simplified args
         resources:
           limits:
             memory: 200Mi
@@ -29,7 +27,7 @@ spec:
             memory: 200Mi
         volumeMounts:
         - name: config-volume
-          mountPath: /fluentd/etc/
+          mountPath: /fluentd/etc
       volumes:
       - name: config-volume
         configMap:

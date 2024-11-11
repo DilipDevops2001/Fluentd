@@ -16,7 +16,7 @@ spec:
       serviceAccountName: fluentd
       containers:
       - name: fluentd
-        image: quay.io/fluentd/fluentd:latest # Consider using a specific version
+        image: fluent/fluentd:v1.17.1-1.1 # Consider using a specific version
         command: ["sh", "-c"]
         args:
         - |

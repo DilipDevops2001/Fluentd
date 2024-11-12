@@ -11,8 +11,8 @@ data:
   pos_file /var/log/fluentd/tail.pos
   tag kubernetes.*
   <parse>
-    @type multi_format
-    format json
+    @type regexp
+    expression /(?<message>.*)/ # Adjust this regex to match your log format
   </parse>
   <buffer>
     @type file
@@ -23,7 +23,7 @@ data:
 </source>
 
 <match kubernetes.**>
-    @type loki
-    loki_url http://34.70.241.221:3100/loki/api/v1/push  # Update with your Loki address
-    labels namespace: ${kubernetes.namespace}, pod: ${kubernetes.pod.name}, container: ${kubernetes.container.name}
+  @type loki
+  loki_url http://34.70.241.221:3100/loki/api/v1/push
+  labels namespace: ${kubernetes.namespace}, pod: ${kubernetes.pod.name}, container: ${kubernetes.container.name}, message: ${message}
 </match>

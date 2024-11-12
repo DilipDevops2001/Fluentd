@@ -5,25 +5,8 @@ metadata:
   namespace: logging
 data:
   fluent.conf: |
-    <source>
-      @type tail
-      path /var/log/containers/*/*.log
-      pos_file /var/log/fluentd/tail.pos
-      tag kubernetes.*
-      <parse>
-        @type multi_format
-        format json
-      </parse>
-      <buffer>
-        @type file
-        path /var/log/fluentd/kubernetes.log
-        flush_interval 1s
-        flush_at_shutdown true
-      </buffer>
-    </source>
-
     <match kubernetes.**>
-        @type loki
-        loki_url http://34.70.241.221:3100/loki/api/v1/push  # Update with your Loki address
-        labels namespace: ${kubernetes.namespace}, pod: ${kubernetes.pod.name}, container: ${kubernetes.container.name}
-    </match>
+    @type loki
+    loki_url http://34.70.241.221:3100/loki/api/v1/push  # Update with your Loki address
+    labels namespace: ${kubernetes.namespace}, pod: ${kubernetes.pod.name}, container: ${kubernetes.container.name}
+   </match>

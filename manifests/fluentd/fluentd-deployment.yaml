@@ -16,7 +16,7 @@ spec:
       serviceAccountName: fluentd
       containers:
       - name: fluentd
-        image: docker.io/kalaksi/fluentd-journald2loki  # <--- REPLACE THIS with your image
+        image: grafana/fluent-plugin-grafana-loki:master  # <--- REPLACE THIS with your image
         command: ["fluentd"]                 # <--- Simplified command
         args: ["-c", "/fluentd/etc/fluent.conf"] # <--- Simplified args
         resources:

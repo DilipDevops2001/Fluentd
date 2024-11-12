@@ -16,7 +16,7 @@ spec:
       serviceAccountName: fluentd
       containers:
       - name: fluentd
-        image: fluent/fluentd-aggregator:latest  # <--- REPLACE THIS with your image
+        image: grafana/fluent-plugin-loki:main-51899b5-amd64  # <--- REPLACE THIS with your image
         command: ["fluentd"]                 # <--- Simplified command
         args: ["-c", "/fluentd/etc/fluent.conf"] # <--- Simplified args
         resources:

@@ -5,22 +5,39 @@ metadata:
   namespace: logging
 data:
   fluent.conf: |
-    <source>
-      @type tail
-      path /var/log/containers/*.log
-      pos_file /var/log/fluentd-pos.log
-      tag kubernetes.${container_name}
-      <parse>
-        @type none
-      </parse>
-      <buffer>
-        @type file
-        path /var/log/fluentd-buffer
-        flush_interval 1s
-      </buffer>
-    </source>
+  <source>
+  @type tail
+  @log_level debug
+  path /var/log/%Y-%m-%d/*/*.log
+  pos_file  /var/log/pos/positions.log.pos
+  tag varlog.*
+  path_key filename
+  multiline_flush_interval 5s
+  refresh_interval 1s
+  read_from_head true
+  follow_inodes true
+  <parse>
+    @type multiline
+    format_firstline /^(?<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{4})(?<message>.+)$/
+    format1 /^(?<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{4})(?<message>.+)$/
+    time_key time
+    time_format %Y-%m-%d %H:%M:%S.%N
+    timezone +0200
+  </parse>
+  <buffer>
+    @type file
+    path /var/log/fluentd-buffer
+    flush_interval 1s
+    chunk_limit_size 1m
+    flush_at_shutdown true
+  </buffer>
+</source>
 
-    <match kubernetes.**>
-      @type loki
-      loki_url http://34.70.241.221:3100/loki/api/v1/push
-    </match>
+<match varlog.**>
+  @type loki
+  loki_url "http://34.70.241.221:3100/loki/api/v1/push"
+  extra_labels {"job":"applogs", "agent":"fluentd"}
+  <label>
+    filename
+  </label>
+</match>

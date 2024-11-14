@@ -10,9 +10,6 @@ data:
       path /var/log/containers/*/*.log
       pos_file /var/log/fluentd-pos.log
       tag kubernetes.${container_name}
-      <parse>
-        @type none
-      </parse>
       <buffer>
         @type file
         path /var/log/fluentd-buffer
@@ -24,5 +21,3 @@ data:
       @type loki
       loki_url http://34.70.241.221:3100/loki/api/v1/push
     </match>
-
-

@@ -10,6 +10,9 @@ data:
       path /var/log/containers/*/*.log
       pos_file /var/log/fluentd-pos.log
       tag kubernetes.${container_name}
+      <parse>
+        @type none
+      </parse>
       <buffer>
         @type file
         path /var/log/fluentd-buffer

@@ -7,20 +7,20 @@ data:
   fluent.conf: |
     <source>
       @type tail
-      path /var/log/containers/*.log
+      path /var/log/containers/*/*.log
       pos_file /var/log/fluentd-pos.log
       tag kubernetes.${container_name}
       <parse>
         @type none
       </parse>
-    </source>
-
-    <match kubernetes.**>
-      @type loki
-      url http://34.70.241.221:3100/loki/api/v1/push  # Corrected parameter name
       <buffer>
         @type file
         path /var/log/fluentd-buffer
         flush_interval 1s
       </buffer>
+    </source>
+
+    <match kubernetes.**>
+      @type loki
+      loki_url http://loki.logging.svc.cluster.local:3100/loki/api/v1/push
     </match>

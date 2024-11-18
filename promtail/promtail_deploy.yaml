@@ -4,13 +4,14 @@ metadata:
   name: promtail
   namespace: test
 spec:
+  replicas: 1  # Adjust the number of replicas based on your needs
   selector:
     matchLabels:
-      name: promtail
+      app: promtail
   template:
     metadata:
       labels:
-        name: promtail
+        app: promtail
     spec:
       serviceAccountName: promtail
       containers:
@@ -26,6 +27,14 @@ spec:
             - name: varlibdockercontainers
               mountPath: /var/lib/docker/containers
               readOnly: true
+            - name: positions
+              mountPath: /run/promtail
+          resources:
+            limits:
+              memory: 200Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi
       volumes:
         - name: config
           configMap:
@@ -36,3 +45,5 @@ spec:
         - name: varlibdockercontainers
           hostPath:
             path: /var/lib/docker/containers
+        - name: positions
+          emptyDir: {}

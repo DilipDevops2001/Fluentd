@@ -19,13 +19,18 @@ spec:
       - name: loki
         image: grafana/loki:latest
         args:
-          - -config.file=/etc/loki/config.yaml  # Update path to match mounted file
+          - -config.file=/etc/loki/config.yaml
         ports:
         - containerPort: 3100
         volumeMounts:
         - name: config
           mountPath: /etc/loki
+        - name: wal-storage
+          mountPath: /wal  # Ensure this path is writable
       volumes:
       - name: config
         configMap:
           name: loki-config
+      - name: wal-storage
+        persistentVolumeClaim:
+          claimName: loki-wal-pvc  # Reference to the PVC

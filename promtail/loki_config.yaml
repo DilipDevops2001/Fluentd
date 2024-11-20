@@ -22,7 +22,7 @@ data:
       configs:
         - from: 2020-10-24
           store: boltdb-shipper
-          object_store: filesystem
+          object_store: memory
           schema: v11
           index:
             prefix: index_
@@ -31,10 +31,8 @@ data:
     storage_config:
       boltdb_shipper:
         active_index_directory: /var/loki/index
-        shared_store: filesystem
+        shared_store: memory
         cache_location: /var/loki/cache
-      filesystem:
-        directory: /var/loki/chunks
 
     limits_config:
       enforce_metric_name: false

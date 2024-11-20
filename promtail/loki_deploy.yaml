@@ -35,4 +35,4 @@ spec:
           configMap:
             name: loki-config
         - name: loki-storage
-          emptyDir: {}
+          emptyDir: {}  # Temporary storage

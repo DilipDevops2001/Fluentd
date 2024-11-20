@@ -1,33 +1,3 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: loki
-  namespace: test
-  labels:
-    app: loki
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: loki
-  template:
-    metadata:
-      labels:
-        app: loki
-    spec:
-      containers:
-      - name: loki
-        image: grafana/loki:latest
-        ports:
-        - containerPort: 3100
-        volumeMounts:
-        - name: config
-          mountPath: /etc/loki
-      volumes:
-      - name: config
-        configMap:
-          name: loki-config
-
 ---
 apiVersion: v1
 kind: Service
@@ -50,7 +20,7 @@ metadata:
   name: loki-config
   namespace: test
 data:
-  loki-config.yaml: |
+  config.yaml: |  # Match the file name in args
     auth_enabled: false
 
     server:

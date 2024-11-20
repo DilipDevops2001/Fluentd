@@ -18,6 +18,8 @@ spec:
       containers:
       - name: loki
         image: grafana/loki:latest
+        args:
+          - -config.file=/etc/loki/loki-config.yaml  # Specify the config file path
         ports:
         - containerPort: 3100
         volumeMounts:

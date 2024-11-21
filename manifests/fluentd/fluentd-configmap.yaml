@@ -17,7 +17,7 @@ data:
 
     <match kubernetes.**>
       @type loki
-      url  http://loki:3100/loki/api/v1/push  # Corrected parameter name
+      url  http://10.100.194.21:3100/loki/api/v1/push  # Corrected parameter name
       <buffer>
         @type file
         path /var/log/fluentd-buffer
